@@ -70,8 +70,8 @@ final class VoiceInkRefineService: ObservableObject {
     }
 
     private let logger = Logger(
-        subsystem: "com.prakashjoshipax.voiceink",
-        category: "VoiceInkRefineService"
+        subsystem: "com.adechrysler.zenivoice",
+        category: "ZeniVoiceRefineService"
     )
     private let modelRootDirectory: URL
     private let inferenceClient = VoiceInkRefineXPCClient()
@@ -94,8 +94,8 @@ final class VoiceInkRefineService: ObservableObject {
             in: .userDomainMask
         )[0]
         modelRootDirectory = appSupportDirectory
-            .appendingPathComponent("com.prakashjoshipax.VoiceInk")
-            .appendingPathComponent("VoiceInkRefine")
+            .appendingPathComponent("com.adechrysler.ZeniVoice")
+            .appendingPathComponent("ZeniVoiceRefine")
 
         refreshDownloadedState()
     }

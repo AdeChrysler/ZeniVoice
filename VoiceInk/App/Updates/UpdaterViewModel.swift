@@ -11,9 +11,9 @@ final class UpdaterViewModel: NSObject, ObservableObject, SPUUpdaterDelegate {
     }
 
     private enum DefaultsKey {
-        // Keep the existing persisted key strings so current user preferences migrate automatically.
-        static let automaticUpdateChecks = "VoiceInkChecksForUpdatesOnLaunch"
-        static let interactedUpdateVersions = "VoiceInkInteractedUpdateVersions"
+        // ZeniVoice preferences are isolated from the upstream app.
+        static let automaticUpdateChecks = "ZeniVoiceChecksForUpdatesOnLaunch"
+        static let interactedUpdateVersions = "ZeniVoiceInteractedUpdateVersions"
         static let sparkleAutomaticChecks = "SUEnableAutomaticChecks"
     }
 
@@ -32,9 +32,12 @@ final class UpdaterViewModel: NSObject, ObservableObject, SPUUpdaterDelegate {
     override init() {
         let defaults = UserDefaults.standard
         self.defaults = defaults
+        #if !LOCAL_BUILD
         checksForUpdatesWhenDashboardAppears = Self.initialAutomaticCheckPreference(in: defaults)
+        #endif
         super.init()
 
+        #if !LOCAL_BUILD
         let updater = updaterController.updater
 
         // VoiceInk owns automatic discovery through Sparkle's non-presenting probe.
@@ -46,9 +49,13 @@ final class UpdaterViewModel: NSObject, ObservableObject, SPUUpdaterDelegate {
         canCheckForUpdates = updater.canCheckForUpdates
         updater.publisher(for: \.canCheckForUpdates)
             .assign(to: &$canCheckForUpdates)
+        #endif
     }
 
     func setChecksForUpdatesWhenDashboardAppears(_ value: Bool) {
+        #if LOCAL_BUILD
+        return
+        #else
         guard checksForUpdatesWhenDashboardAppears != value else { return }
 
         checksForUpdatesWhenDashboardAppears = value
@@ -59,6 +66,7 @@ final class UpdaterViewModel: NSObject, ObservableObject, SPUUpdaterDelegate {
         } else {
             availableUpdate = nil
         }
+        #endif
     }
 
     func checkForUpdatesIfDue() {

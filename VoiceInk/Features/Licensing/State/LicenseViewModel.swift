@@ -28,7 +28,7 @@ final class LicenseViewModel: ObservableObject {
 
     private let trialPeriodDays = 7
     private let polarService: any PolarServicing
-    private let logger = Logger(subsystem: "com.prakashjoshipax.voiceink", category: "LicenseViewModel")
+    private let logger = Logger(subsystem: "com.adechrysler.zenivoice", category: "LicenseViewModel")
     private let userDefaults: UserDefaults
     private let licenseManager: any LicenseStoring
     private let now: () -> Date
@@ -45,7 +45,7 @@ final class LicenseViewModel: ObservableObject {
     private var retryTask: Task<Void, Never>?
     private var stateRefreshTask: Task<Void, Never>?
 
-    private let pendingRemovalKey = "VoiceInkLicenseRemovalPending"
+    private let pendingRemovalKey = "ZeniVoiceLicenseRemovalPending"
 
     private convenience init() {
         self.init(
@@ -115,7 +115,7 @@ final class LicenseViewModel: ObservableObject {
         case .unavailable:
             setStorageError(
                 String(
-                    localized: "VoiceInk couldn't start the trial because the macOS Keychain is unavailable. Quit and reopen VoiceInk. If the problem continues, restart your Mac."
+                    localized: "ZeniVoice couldn't start the trial because the macOS Keychain is unavailable. Quit and reopen ZeniVoice. If the problem continues, restart your Mac."
                 )
             )
             return false
@@ -166,7 +166,7 @@ final class LicenseViewModel: ObservableObject {
         switch licenseState {
         case .unlicensed, .trialExpired:
             return String(
-                format: String(localized: "Your trial has ended. Upgrade to VoiceInk Pro at %@"),
+                format: String(localized: "Your trial has ended. Upgrade to ZeniVoice Pro at %@"),
                 "tryvoiceink.com/buy"
             )
         case .trial, .licensed:
@@ -245,7 +245,7 @@ final class LicenseViewModel: ObservableObject {
                     if isValid {
                         let limit = licenseCheck.activationsLimit ?? userDefaults.activationsLimit
                         requiresActivation = true
-                        userDefaults.set(true, forKey: "VoiceInkLicenseRequiresActivation")
+                        userDefaults.set(true, forKey: "ZeniVoiceLicenseRequiresActivation")
                         activationsLimit = limit
                         userDefaults.activationsLimit = limit
                         completeSuccessfulValidation(message: String(localized: "License activated successfully!"))
@@ -258,14 +258,14 @@ final class LicenseViewModel: ObservableObject {
 
                 let limit = try await activateAndPersistLicense(normalizedLicenseKey)
                 requiresActivation = true
-                userDefaults.set(true, forKey: "VoiceInkLicenseRequiresActivation")
+                userDefaults.set(true, forKey: "ZeniVoiceLicenseRequiresActivation")
                 activationsLimit = limit
                 userDefaults.activationsLimit = limit
             } else {
                 let limit = licenseCheck.activationsLimit ?? 0
                 try persistLicense(key: normalizedLicenseKey, activationId: nil)
                 requiresActivation = false
-                userDefaults.set(false, forKey: "VoiceInkLicenseRequiresActivation")
+                userDefaults.set(false, forKey: "ZeniVoiceLicenseRequiresActivation")
                 activationsLimit = limit
                 userDefaults.activationsLimit = limit
                 completeSuccessfulValidation(message: String(localized: "License validated successfully!"))
@@ -286,7 +286,7 @@ final class LicenseViewModel: ObservableObject {
                 code
             )
         } catch LicenseStorageError.failed {
-            setStorageError(String(localized: "VoiceInk couldn't save the license. Please try again."))
+            setStorageError(String(localized: "ZeniVoice couldn't save the license. Please try again."))
         } catch let urlError as URLError {
             logger.error("🔑 License network error: \(urlError, privacy: .public)")
             validationMessage = String(
@@ -378,7 +378,7 @@ final class LicenseViewModel: ObservableObject {
             }
             try clearStoredLicense(resetTrialAt: deactivationDate)
         } catch LicenseStorageError.failed {
-            setStorageError(String(localized: "VoiceInk couldn't remove the saved license. Please try again."))
+            setStorageError(String(localized: "ZeniVoice couldn't remove the saved license. Please try again."))
         } catch {
             logger.error("🔑 License deactivation failed: \(error, privacy: .public)")
             validationSuccess = false
@@ -406,7 +406,7 @@ final class LicenseViewModel: ObservableObject {
     }
 
     private func clearCachedLicense() {
-        userDefaults.set(false, forKey: "VoiceInkLicenseRequiresActivation")
+        userDefaults.set(false, forKey: "ZeniVoiceLicenseRequiresActivation")
         userDefaults.activationsLimit = 0
         storedLicenseKey = nil
         activationId = nil
@@ -434,7 +434,7 @@ final class LicenseViewModel: ObservableObject {
             activationId = storedState.activationId
             trialStartDate = storedState.trialStartDate
             licenseKey = storedLicenseKey ?? ""
-            requiresActivation = userDefaults.bool(forKey: "VoiceInkLicenseRequiresActivation")
+            requiresActivation = userDefaults.bool(forKey: "ZeniVoiceLicenseRequiresActivation")
             activationsLimit = userDefaults.activationsLimit
             isPersistentStateAvailable = true
             persistentStateErrorStatus = nil
@@ -571,7 +571,7 @@ final class LicenseViewModel: ObservableObject {
     private var keychainUnavailableMessage: String {
         let recoveryMessage = String(
             localized:
-                "VoiceInk couldn't access the macOS Keychain. Quit and reopen VoiceInk. If the problem continues, restart your Mac."
+                "ZeniVoice couldn't access the macOS Keychain. Quit and reopen ZeniVoice. If the problem continues, restart your Mac."
         )
 
         guard let persistentStateErrorStatus else { return recoveryMessage }
@@ -583,7 +583,7 @@ final class LicenseViewModel: ObservableObject {
 // UserDefaults extension for non-sensitive license settings.
 extension UserDefaults {
     var activationsLimit: Int {
-        get { integer(forKey: "VoiceInkActivationsLimit") }
-        set { set(newValue, forKey: "VoiceInkActivationsLimit") }
+        get { integer(forKey: "ZeniVoiceActivationsLimit") }
+        set { set(newValue, forKey: "ZeniVoiceActivationsLimit") }
     }
 }

@@ -27,7 +27,7 @@ final class DictionaryQuickAddManager {
         let initialSize = NSSize(width: 500, height: DictionaryQuickAddView.Mode.vocabulary.panelHeight)
         let newPanel = PersistentQuickPanel(
             size: initialSize,
-            positionDefaultsKey: "VoiceInkDictionaryQuickAddOrigin",
+            positionDefaultsKey: "ZeniVoiceDictionaryQuickAddOrigin",
             defaultVerticalOffset: 60
         )
         newPanel.onEscape = { [weak self] in
@@ -210,7 +210,7 @@ struct DictionaryQuickAddView: View {
             Image(systemName: "character.book.closed.fill")
                 .font(.system(size: 14))
                 .foregroundStyle(.secondary)
-            TextField("", text: $wordInput, prompt: Text("e.g. Prakash, VoiceInk").foregroundColor(.secondary))
+            TextField("", text: $wordInput, prompt: Text("e.g. Prakash, ZeniVoice").foregroundColor(.secondary))
                 .textFieldStyle(.roundedBorder)
                 .font(.system(size: 14))
                 .focused($focusedField, equals: .word)

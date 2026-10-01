@@ -74,7 +74,7 @@ final class QuickHistoryController: NSObject {
         let hostingController = NSHostingController(rootView: rootView)
         let panel = PersistentQuickPanel(
             size: NSSize(width: 680, height: 470),
-            positionDefaultsKey: "VoiceInkHistoryQuickAccessOrigin"
+            positionDefaultsKey: "ZeniVoiceHistoryQuickAccessOrigin"
         )
         panel.onEscape = { [weak self] in
             self?.handleEscape()

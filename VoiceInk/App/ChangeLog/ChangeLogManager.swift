@@ -21,7 +21,7 @@ enum ChangeLogCatalog {
     static let latest = ChangeLogItem(
         id: "dictionary-auto-learn",
         summary:
-            "VoiceInk automatically learns from the corrections you make to improve transcription accuracy over time. Dictionary Auto Learn uses your currently configured AI provider and AI model. You can change them anytime in Dictionary Settings.",
+            "ZeniVoice automatically learns from the corrections you make to improve transcription accuracy over time. Dictionary Auto Learn uses your currently configured AI provider and AI model. You can change them anytime in Dictionary Settings.",
         youtubeVideoID: "29Wy0SkoWk8"
     )
 }
@@ -29,7 +29,7 @@ enum ChangeLogCatalog {
 @MainActor
 final class ChangeLogManager: ObservableObject {
     private enum DefaultsKey {
-        static let dismissedItemIDs = "VoiceInkDismissedChangeLogItemIDs"
+        static let dismissedItemIDs = "ZeniVoiceDismissedChangeLogItemIDs"
     }
 
     @Published private(set) var presentedItem: ChangeLogItem?

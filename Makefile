@@ -4,7 +4,7 @@ WHISPER_CPP_DIR := $(DEPS_DIR)/whisper.cpp
 FRAMEWORK_PATH := $(WHISPER_CPP_DIR)/build-apple/whisper.xcframework
 LOCAL_DERIVED_DATA := $(CURDIR)/.local-build
 LOCAL_CODESIGN_IDENTITY ?=
-RUN_APP_NAME ?= VoiceInk
+RUN_APP_NAME ?= ZeniVoice
 
 .PHONY: all clean whisper setup build local check healthcheck help dev run release release-setup
 
@@ -12,7 +12,7 @@ RUN_APP_NAME ?= VoiceInk
 all: check build
 
 # Development workflow
-dev: RUN_APP_NAME = VoiceInk Dev
+dev: RUN_APP_NAME = ZeniVoice Dev
 dev: build run
 
 # Prerequisites
@@ -21,6 +21,7 @@ check:
 	@command -v git >/dev/null 2>&1 || { echo "git is not installed"; exit 1; }
 	@command -v xcodebuild >/dev/null 2>&1 || { echo "xcodebuild is not installed (need Xcode)"; exit 1; }
 	@command -v swift >/dev/null 2>&1 || { echo "swift is not installed"; exit 1; }
+	@command -v cmake >/dev/null 2>&1 || { echo "cmake is not installed (brew install cmake)"; exit 1; }
 	@echo "Prerequisites OK"
 
 healthcheck: check
@@ -52,8 +53,7 @@ build: setup
 
 # Build locally with stable Apple Development signing when available.
 local: check setup
-	@echo "Building VoiceInk for local use (no Apple Developer certificate required)..."
-	@rm -rf "$(LOCAL_DERIVED_DATA)"
+	@echo "Building ZeniVoice for local use (no Apple Developer certificate required)..."
 	@SIGNING_IDENTITY="$(LOCAL_CODESIGN_IDENTITY)"; \
 	if [ -z "$$SIGNING_IDENTITY" ]; then \
 		SIGNING_IDENTITIES=$$(security find-identity -v -p codesigning 2>/dev/null | awk '/"Apple Development: / { print $$2 }'); \
@@ -80,19 +80,19 @@ local: check setup
 		CODE_SIGNING_ALLOWED=YES \
 		DEVELOPMENT_TEAM="" \
 		CODE_SIGN_ENTITLEMENTS="$(CURDIR)/VoiceInk/VoiceInk.local.entitlements" \
-		SWIFT_ACTIVE_COMPILATION_CONDITIONS='$$(inherited) LOCAL_BUILD' \
+		SWIFT_ACTIVE_COMPILATION_CONDITIONS='$$(inherited) LOCAL_BUILD ENABLE_NATIVE_SPEECH_ANALYZER' \
 		-skipPackagePluginValidation \
 		-skipMacroValidation \
 		build
-	@APP_PATH="$(LOCAL_DERIVED_DATA)/Build/Products/Release/VoiceInk.app" && \
+	@APP_PATH="$(LOCAL_DERIVED_DATA)/Build/Products/Release/ZeniVoice.app" && \
 	if [ -d "$$APP_PATH" ]; then \
-		echo "Copying VoiceInk.app to ~/Downloads..."; \
-		rm -rf "$$HOME/Downloads/VoiceInk.app"; \
-		ditto "$$APP_PATH" "$$HOME/Downloads/VoiceInk.app"; \
-		xattr -cr "$$HOME/Downloads/VoiceInk.app"; \
+		echo "Copying ZeniVoice.app to ~/Downloads..."; \
+		rm -rf "$$HOME/Downloads/ZeniVoice.app"; \
+		ditto "$$APP_PATH" "$$HOME/Downloads/ZeniVoice.app"; \
+		xattr -cr "$$HOME/Downloads/ZeniVoice.app"; \
 		echo ""; \
-		echo "Build complete! App saved to: ~/Downloads/VoiceInk.app"; \
-		echo "Run with: open ~/Downloads/VoiceInk.app"; \
+		echo "Build complete! App saved to: ~/Downloads/ZeniVoice.app"; \
+		echo "Run with: open ~/Downloads/ZeniVoice.app"; \
 		echo ""; \
 		echo "Limitations of local builds:"; \
 		echo "  - No iCloud dictionary sync"; \

@@ -22,6 +22,18 @@ struct LicenseManagementView: View {
     }
 
     var body: some View {
+        #if LOCAL_BUILD
+        VStack(alignment: .leading, spacing: 16) {
+            Text("ZeniVoice").font(.largeTitle.bold())
+            Text("Free personal build — no subscription, activation key, or trial expiry.")
+            Text("Use a local transcription model for free offline dictation. Optional cloud providers require your own API key and may charge for usage.")
+            Text("Based on VoiceInk by Pax. Licensed under GNU GPL v3.")
+            Link("Upstream source and credits", destination: URL(string: "https://github.com/Beingpax/VoiceInk")!)
+            Text("Version \(appVersion) (\(appBuild))").foregroundStyle(.secondary)
+        }
+        .padding(32)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        #else
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 14) {
@@ -58,11 +70,12 @@ struct LicenseManagementView: View {
             }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("This deactivates VoiceInk on this Mac and frees a device on your license.")
+            Text("This deactivates ZeniVoice on this Mac and frees a device on your license.")
         }
         .onChange(of: licenseViewModel.hasVerifiedLicense) { _, _ in
             licenseKeyDraft = ""
         }
+        #endif
     }
 
     private var bottomReportDismissLayer: some View {
@@ -132,7 +145,7 @@ struct LicenseManagementView: View {
                 LicenseProMark()
 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("VoiceInk Pro")
+                    Text("ZeniVoice Pro")
                         .font(licenseTitleFont)
 
                     Text(trialSummary)
@@ -201,7 +214,7 @@ struct LicenseManagementView: View {
 
     private var activeLicenseCard: some View {
         LicenseActiveSummaryCard(
-            title: "VoiceInk Pro",
+            title: "ZeniVoice Pro",
             subtitle: String(format: String(localized: "Version %@ (%@)"), appVersion, appBuild),
             licenseKey: licenseViewModel.licenseKey,
             didCopyLicenseKey: didCopyLicenseKey,
@@ -540,13 +553,13 @@ private struct ReportFeedbackBottomPanel: View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 20) {
                 VStack(spacing: 18) {
-                    Text("Thank you for using VoiceInk")
+                    Text("Thank you for using ZeniVoice")
                         .font(.system(size: 24, weight: .semibold, design: .rounded))
                         .multilineTextAlignment(.center)
                         .fixedSize(horizontal: false, vertical: true)
 
                     Text(
-                        "Have feedback, a bug report, or something that feels off? Send a note with system information by email, or join Discord for community discussion. Every report helps make VoiceInk more reliable and easier to use."
+                        "Have feedback, a bug report, or something that feels off? Send a note with system information by email, or join Discord for community discussion. Every report helps make ZeniVoice more reliable and easier to use."
                     )
                     .font(.callout)
                     .foregroundStyle(.secondary)

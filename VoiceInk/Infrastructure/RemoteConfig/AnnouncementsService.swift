@@ -22,6 +22,9 @@ final class AnnouncementsService {
     // MARK: - Public API
 
     func start() {
+        #if LOCAL_BUILD
+        return
+        #else
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: refreshInterval, repeats: true) { [weak self] _ in
             self?.fetchAndMaybeShow()
@@ -30,6 +33,7 @@ final class AnnouncementsService {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
             self?.fetchAndMaybeShow()
         }
+        #endif
     }
 
     func stop() {

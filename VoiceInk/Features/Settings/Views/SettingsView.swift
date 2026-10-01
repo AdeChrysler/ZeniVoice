@@ -141,7 +141,7 @@ struct SettingsView: View {
                 } label: {
                     HStack(spacing: 4) {
                         Text("Auto Send")
-                        InfoTip("Press Return while recording to stop and deliver the result. VoiceInk will then paste the result and press the selected key to send it. Choose None to disable this feature.")
+                        InfoTip("Press Return while recording to stop and deliver the result. ZeniVoice will then paste the result and press the selected key to send it. Choose None to disable this feature.")
                     }
                 }
 
@@ -150,7 +150,7 @@ struct SettingsView: View {
                     isEnabled: $restoreClipboardAfterPaste,
                     label: "Keep Clipboard Content",
                     infoMessage:
-                        "VoiceInk temporarily uses the clipboard to paste transcription. When enabled, it restores your previous clipboard content after the selected delay. When disabled, the pasted transcription stays on your clipboard."
+                        "ZeniVoice temporarily uses the clipboard to paste transcription. When enabled, it restores your previous clipboard content after the selected delay. When disabled, the pasted transcription stays on your clipboard."
                 ) {
                     Picker("Restore Delay", selection: $clipboardRestoreDelay) {
                         Text("250ms").tag(0.25)
@@ -240,6 +240,7 @@ struct SettingsView: View {
                 )
                 .disabled(launchAtLoginManager.isUpdating)
 
+                #if !LOCAL_BUILD
                 Toggle(
                     "Automatically Check for Updates",
                     isOn: Binding(
@@ -256,11 +257,18 @@ struct SettingsView: View {
                         }
                     }
 
+                #else
+                Text("To update ZeniVoice, pull the latest source and rebuild.")
+                    .foregroundStyle(.secondary)
+                #endif
+
                 HStack {
+                    #if !LOCAL_BUILD
                     Button("Check for Updates") {
                         updaterViewModel.checkForUpdates()
                     }
                     .disabled(!updaterViewModel.canCheckForUpdates)
+                    #endif
 
                     Button("Reset Onboarding") {
                         showResetOnboardingAlert = true
@@ -327,10 +335,10 @@ struct SettingsView: View {
         } message: {
             Text("You'll see the introduction screens again the next time you launch the app.")
         }
-        .alert("Restart VoiceInk to Apply Language", isPresented: $showLanguageRestartAlert) {
+        .alert("Restart ZeniVoice to Apply Language", isPresented: $showLanguageRestartAlert) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text("Your language change will take full effect after you quit and reopen VoiceInk.")
+            Text("Your language change will take full effect after you quit and reopen ZeniVoice.")
         }
     }
 

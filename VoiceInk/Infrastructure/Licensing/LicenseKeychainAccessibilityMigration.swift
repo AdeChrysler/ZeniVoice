@@ -9,7 +9,7 @@ enum LicenseKeychainKeys {
 struct LicenseKeychainAccessibilityMigration {
     private let keychain: KeychainService
     private let defaults: UserDefaults
-    private let migrationKey = "VoiceInkLicenseAccessibilityMigrationV1"
+    private let migrationKey = "ZeniVoiceLicenseAccessibilityMigrationV1"
     private let accessibility = KeychainService.Accessibility.afterFirstUnlockThisDeviceOnly
 
     init(

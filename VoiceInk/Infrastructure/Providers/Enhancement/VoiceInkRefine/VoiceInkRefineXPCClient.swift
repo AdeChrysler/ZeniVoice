@@ -64,8 +64,8 @@ actor VoiceInkRefineXPCClient {
     private static let warmGracePeriod: Duration = .seconds(10)
 
     private let logger = Logger(
-        subsystem: "com.prakashjoshipax.voiceink",
-        category: "VoiceInkRefineXPCClient"
+        subsystem: "com.adechrysler.zenivoice",
+        category: "ZeniVoiceRefineXPCClient"
     )
 
     private var connection: NSXPCConnection?
