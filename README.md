@@ -11,6 +11,8 @@ Requires macOS 15+, full Xcode, Git, and CMake (`brew install cmake`).
 ```sh
 git clone https://github.com/AdeChrysler/ZeniVoice.git
 cd ZeniVoice
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -runFirstLaunch
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -downloadComponent MetalToolchain
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer make local LOCAL_CODESIGN_IDENTITY=-
 open ~/Downloads/ZeniVoice.app
 ```

@@ -4,6 +4,8 @@ Requires macOS 15+, full Xcode (not just Command Line Tools), Git, and CMake.
 
 ```sh
 brew install cmake
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -runFirstLaunch
+DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -downloadComponent MetalToolchain
 DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer make local LOCAL_CODESIGN_IDENTITY=-
 open ~/Downloads/ZeniVoice.app
 ```
